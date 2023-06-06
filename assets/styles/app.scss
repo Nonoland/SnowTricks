@@ -1,0 +1,32 @@
+@import "~bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons";
+
+body {
+    background-color: lightgray;
+}
+
+.hero {
+    height: 90vh;
+
+    background-image: url(https://images.unsplash.com/photo-1529669851596-ba9a5549af95?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&dl=yann-allegre-8FG9tt8qZ-8-unsplash.jpg&w=2400);
+    background-size: cover;
+    background-position: center;
+
+    #filled:hover {
+        background-color: white !important;
+        color: black !important;
+    }
+
+    #outlined:hover {
+        background-color: #9B5DE5;
+        color: white;
+    }
+}
+
+.tricks_list {
+    margin: 50px auto;
+}
+
+footer {
+    background-color: white;
+}
