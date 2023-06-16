@@ -1,5 +1,6 @@
 @import "~bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons";
+@import "newTrick";
 
 body {
     background-color: lightgray;
@@ -25,6 +26,15 @@ body {
 
 .tricks_list {
     margin: 50px auto;
+
+    .card {
+        .card-title {
+            a {
+                color: black;
+                text-decoration: none;
+            }
+        }
+    }
 }
 
 footer {

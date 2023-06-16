@@ -24,6 +24,12 @@ class Trick
     #[ORM\JoinColumn(nullable: false)]
     private ?TrickGroup $trickGroup = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
+    #[ORM\Column(nullable: true)]
+    private array $images = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,5 +69,34 @@ class Trick
         $this->trickGroup = $trickGroup;
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getImages(): array
+    {
+        return $this->images;
+    }
+
+    public function setImages(?array $images): self
+    {
+        $this->images = $images;
+
+        return $this;
+    }
+
+    public function addImage(string $image): void
+    {
+        $this->images[] = $image;
     }
 }

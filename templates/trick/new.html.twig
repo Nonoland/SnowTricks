@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SnowTrick | Trick{% endblock %}
+
+{% block body %}
+    <div class="container d-flex justify-content-center py-4">
+        <div class="card" style="width: 80%">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image</text></svg>
+            <div class="card-body">
+                {{ form_start(formTrick, {'attr': {'class' : 'new_trick'}}) }}
+                    {{ form_widget(formTrick.trickImageMedia, {'attr': {'hidden' : ''}}) }}
+                    <div class="mb-3">
+                        <div class="row gap-3 media_row">
+                            <div class="col">
+                                <button class="add_media">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    Ajouter un média
+                                </button>
+                            </div>
+                            <div class="col media" data-index="" hidden>
+                                <img src="">
+                                <button class="remove">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {{ form_end(formTrick) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addTrickGroup" tabindex="-1" aria-labelledby="addTrickGroup" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Trick Group</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ form(formTrickGroup) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

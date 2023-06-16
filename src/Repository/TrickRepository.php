@@ -39,6 +39,15 @@ class TrickRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByLimit(int $limit): array
+    {
+        return $this->createQueryBuilder('t')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return Tricks[] Returns an array of Tricks objects
 //     */
