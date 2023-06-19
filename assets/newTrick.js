@@ -28,73 +28,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    let selectedFiles = [];
-    const inputImage = form.querySelector('input#trick_trickImageMedia');
-    const buttonAddMedia = form.querySelector('button.add_media');
+    //Input image
+    for (let i = 1; i <= 3; i++) {
+        const imageInput = form.querySelector(`#trick_image${i}`);
+        const imageElement = form.querySelector(`.media.image${i} img`);
+        const buttonEdit = form.querySelector(`.media.image${i} .edit`);
+        const buttonRemove = form.querySelector(`.media.image${i} .remove`);
+        buttonRemove.hidden = true;
 
-    const templateImagePreview = form.querySelector('.media_row .media').cloneNode(true);
-    templateImagePreview.hidden = false;
-    form.querySelector('.media_row .media').remove();
+        imageInput.addEventListener('change', (event) => {
+            const files = event.target.files;
+            const newFiles = Array.from(files);
 
-    buttonAddMedia.addEventListener('click', (event) => {
-        event.preventDefault();
-
-        inputImage.click();
-    });
-
-    inputImage.addEventListener('change', (event) => {
-        const files = event.target.files;
-        const fileList = Array.from(files);
-
-        fileList.forEach((file) => {
-            const id = Date.now().toString() + Math.random().toString();
-            selectedFiles[id] = file;
-        });
-
-        let medias = form.querySelectorAll('.media');
-        medias.forEach((media) => {
-            media.remove();
-        });
-
-        Object.keys(selectedFiles).forEach((id) => {
-            const file = selectedFiles[id];
-
-            const newImagePreview = templateImagePreview.cloneNode(true);
-            newImagePreview.querySelector('img').src = URL.createObjectURL(file);
-            newImagePreview.onload = () => {
+            imageElement.src = URL.createObjectURL(newFiles[0]);
+            imageElement.onload = function () {
                 URL.revokeObjectURL(this.src);
-            };
-
-            newImagePreview.querySelector('.remove').addEventListener('click', (event) => {
-                event.preventDefault();
-
-                delete selectedFiles[id];
-                newImagePreview.remove();
-            })
-
-            form.querySelector('.media_row').appendChild(newImagePreview);
-        });
-    });
-
-    const buttonSubmit = form.querySelector('button[type="submit"]');
-    buttonSubmit.addEventListener('click', (event) => {
-        event.preventDefault();
-
-        const formData = new FormData(form);
-
-        selectedFiles.forEach((file, index) => {
-            formData.append(`trick[trickImageMedia][${index}]`, file);
-        });
-
-        fetch(window.location, {
-            method: 'POST',
-            body: formData
-        }).then((response) => {
-            if (response.ok) {
-                window.location = '/';
-            } else {
-                //Erreur
             }
+
+            buttonRemove.hidden = false;
+        })
+
+        buttonEdit.addEventListener('click', (event) => {
+           event.preventDefault();
+
+           imageInput.click();
         });
-    });
+
+        buttonRemove.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            imageElement.src = "";
+            imageInput.value = "";
+
+            buttonRemove.hidden = true;
+        });
+    }
 });

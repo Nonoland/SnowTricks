@@ -31,13 +31,49 @@ class TrickType extends AbstractType
                 'label_html' => true,
                 'label' => 'Trick Group <a href="#" data-bs-toggle="modal" data-bs-target="#addTrickGroup"><span class="badge text-bg-success">Add new group</span></a>'
             ])
-            ->add('trickImageMedia', FileType::class, [
-                'label' => 'Images',
-                'multiple' => true,
+            ->add('firstImage', FileType::class, [
+                'label' => 'First Image',
+                'multiple' => false,
                 'mapped' => false,
                 'attr' => [
                     'accept' => 'image/*'
                 ]
+            ])
+            ->add('image1', FileType::class, [
+                'label' => 'Image 1',
+                'multiple' => false,
+                'mapped' => false,
+                'attr' => [
+                    'accept' => 'image/*'
+                ]
+            ])
+            ->add('image2', FileType::class, [
+                'label' => 'Image 2',
+                'multiple' => false,
+                'mapped' => false,
+                'attr' => [
+                    'accept' => 'image/*'
+                ]
+            ])
+            ->add('image3', FileType::class, [
+                'label' => 'Image 3',
+                'multiple' => false,
+                'mapped' => false,
+                'attr' => [
+                    'accept' => 'image/*'
+                ]
+            ])
+            ->add('media1', TextType::class, [
+                'label' => 'Media 1',
+                'required' => false
+            ])
+            ->add('media2', TextType::class, [
+                'label' => 'Media 2',
+                'required' => false
+            ])
+            ->add('media3', TextType::class, [
+                'label' => 'Media 3',
+                'required' => false
             ])
             ->add('save', SubmitType::class)
         ;

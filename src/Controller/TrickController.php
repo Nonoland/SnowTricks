@@ -81,25 +81,28 @@ class TrickController extends AbstractController
             /** @var Trick $trick */
             $trick = $formTrick->getData();
 
-            $uploadedFiles = $formTrick->get('trickImageMedia')->getData();
+            for ($i = 1; $i <= 3; $i++) {
+                //Image input
 
-            /** @var UploadedFile $uploadedFile */
-            foreach ($uploadedFiles as $uploadedFile) {
-                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = uniqid().'.'.$uploadedFile->guessExtension();
+                $uploadedFileImage = $formTrick->get('image'.$i)->getData();
+                if ($uploadedFileImage) {
+                    $newFilename = uniqid().'.'.$uploadedFileImage->guessExtension();
 
-                try {
-                    $appPath = $this->getParameter('uploads_base_url');
-                    $uploadedFile->move(
-                        $appPath,
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    echo $e->getMessage();
-                    die();
+                    try {
+                        $appPath = $this->getParameter('uploads_base_url');
+                        $uploadedFileImage->move(
+                            $appPath,
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        //TODO : Changer
+                        echo $e->getMessage();
+                        die();
+                    }
+
+                    $callback = "setImage" . $i;
+                    $trick->$callback($newFilename);
                 }
-
-                $trick->addImage($newFilename);
             }
 
             $this->entityManager->persist($trick);

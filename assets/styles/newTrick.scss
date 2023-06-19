@@ -1,52 +1,42 @@
 form.new_trick {
-  .media_row {
-    .col {
-      max-width: 150px;
-      max-height: 150px;
+  .col.media {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    img {
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      width: 100%;
+
+      border-radius: 5px;
 
       position: relative;
 
-      button.add_media {
-        width: 150px;
-        height: 150px;
+      &[src=""] {
         background-color: white;
-        border-radius: 10px;
-        border: solid 1px $border-color;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        svg {
-          width: 50px;
-        }
       }
+    }
 
-      img {
-        width: 150px;
-        height: 150px;
+    .actions {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
 
-        object-fit: cover;
+      margin-top: 10px;
+      margin-left: auto;
 
-        border-radius: 10px;
-      }
-
-      .remove {
-        position: absolute;
-        top: 10px;
-        left: 21px;
-
+      button {
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 5px;
         width: 25px;
         height: 25px;
 
         display: flex;
         justify-content: center;
         align-items: center;
-
-        background-color: white;
-        border-radius: 50%;
-        border: 1px solid black;
       }
     }
   }
