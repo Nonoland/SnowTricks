@@ -2,17 +2,14 @@
 
 namespace App\Form;
 
-use App\Entity\Trick;
 use App\Entity\TrickGroup;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TrickType extends AbstractType
 {
@@ -36,53 +33,47 @@ class TrickType extends AbstractType
                 'multiple' => false,
                 'mapped' => false,
                 'attr' => [
-                    'accept' => 'image/*'
+                    'accept' => 'image/*',
+                    'hidden' => ''
                 ]
             ])
             ->add('image1', FileType::class, [
-                'label' => 'Image 1',
-                'multiple' => false,
-                'mapped' => false,
                 'attr' => [
-                    'accept' => 'image/*'
-                ]
+                    'hidden' => ''
+                ],
+                'required' => false
             ])
             ->add('image2', FileType::class, [
-                'label' => 'Image 2',
-                'multiple' => false,
-                'mapped' => false,
                 'attr' => [
-                    'accept' => 'image/*'
-                ]
+                    'hidden' => ''
+                ],
+                'required' => false
             ])
             ->add('image3', FileType::class, [
-                'label' => 'Image 3',
-                'multiple' => false,
-                'mapped' => false,
                 'attr' => [
-                    'accept' => 'image/*'
-                ]
-            ])
-            ->add('media1', TextType::class, [
-                'label' => 'Media 1',
+                    'hidden' => ''
+                ],
                 'required' => false
             ])
-            ->add('media2', TextType::class, [
-                'label' => 'Media 2',
+            ->add('media1', FileType::class, [
+                'attr' => [
+                    'hidden' => ''
+                ],
                 'required' => false
             ])
-            ->add('media3', TextType::class, [
-                'label' => 'Media 3',
+            ->add('media2', FileType::class, [
+                'attr' => [
+                    'hidden' => ''
+                ],
+                'required' => false
+            ])
+            ->add('media3', FileType::class, [
+                'attr' => [
+                    'hidden' => ''
+                ],
                 'required' => false
             ])
             ->add('save', SubmitType::class)
         ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Trick::class,
-        ]);
     }
 }

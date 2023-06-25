@@ -1,42 +1,67 @@
-form.new_trick {
-  .col.media {
-    position: relative;
+.new_trick {
 
-    display: flex;
-    flex-direction: column;
+  .first_image {
+    object-fit: cover;
+  }
 
-    img {
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      width: 100%;
-
-      border-radius: 5px;
-
+  form {
+    .col.media {
       position: relative;
 
-      &[src=""] {
-        background-color: white;
+      display: flex;
+      flex-direction: column;
+
+      img {
+        aspect-ratio: 16/9;
+        object-fit: cover;
+        width: 100%;
+
+        border-radius: 5px;
+
+        position: relative;
+
+        &[src=""] {
+          background-color: white;
+        }
+      }
+
+      .embed {
+        iframe {
+          width: 100%;
+          aspect-ratio: 16/9;
+          height: 100%;
+        }
       }
     }
+  }
 
-    .actions {
+  .actions {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+
+    margin-top: 10px;
+    margin-left: auto;
+
+    button {
+      background-color: transparent;
+      border: 1px solid black;
+      border-radius: 5px;
+      width: 25px;
+      height: 25px;
+
       display: flex;
-      flex-direction: row;
-      gap: 5px;
+      justify-content: center;
+      align-items: center;
+    }
 
-      margin-top: 10px;
-      margin-left: auto;
+    &.actions_first_image {
+      position: absolute;
+      top: 0;
+      right: 10px;
 
       button {
-        background-color: transparent;
-        border: 1px solid black;
-        border-radius: 5px;
-        width: 25px;
-        height: 25px;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        background: white;
       }
     }
   }
