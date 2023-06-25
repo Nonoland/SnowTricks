@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container d-flex justify-content-center py-4 new_trick">
         <div class="card" style="width: 80%">
-            <img class="first_image" src="{{ asset('images/image_placeholder.svg') }}" alt="Placeholder">
+            <img class="first_image" src="https://placehold.co/1035x540?text=Image" alt="Placeholder">
             <div class="card-body">
                 {{ form_start(formTrick) }}
                     {{ form_widget(formTrick.firstImage, {'attr': {'hidden' : ''}}) }}

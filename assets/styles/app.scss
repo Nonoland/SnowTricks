@@ -28,6 +28,11 @@ body {
     margin: 50px auto;
 
     .card {
+        .card-img-top {
+            object-fit: cover;
+            aspect-ratio: 16/9;
+        }
+
         .card-title {
             a {
                 color: black;

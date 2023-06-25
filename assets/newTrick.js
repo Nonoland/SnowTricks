@@ -122,10 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formSubmit = (event) => {
                 event.preventDefault();
 
-                console.log(mediaInput);
-                console.log(mediaEmbed);
-                mediaInput.value =
-                    mediaEmbed.value;
+                mediaInput.value = mediaEmbed.value;
 
                 if (mediaInput.value.length > 0) {
                     buttonRemove.hidden = false;

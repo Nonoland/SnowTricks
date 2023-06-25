@@ -2,6 +2,8 @@
 
   .first_image {
     object-fit: cover;
+
+    border-radius: var(--bs-card-border-radius) var(--bs-card-border-radius) 0 0;
   }
 
   form {
