@@ -64,12 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonRemoveFirstImage.hidden = true;
     });
 
-    //Input image
     for (let i = 1; i <= 3; i++) {
         const imageInput = form.querySelector(`input[name="trick[image${i}]"]`);
         const imageElement = form.querySelector(`.media.image${i} img`);
-        const buttonEdit = form.querySelector(`.media.image${i} .edit`);
-        const buttonRemove = form.querySelector(`.media.image${i} .remove`);
+        const imageButtonEdit = form.querySelector(`.media.image${i} .edit`);
+        const imageButtonRemove = form.querySelector(`.media.image${i} .remove`);
 
         imageInput.addEventListener('change', (event) => {
             const files = event.target.files;
@@ -80,38 +79,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 URL.revokeObjectURL(this.src);
             }
 
-            buttonRemove.hidden = false;
+            imageButtonRemove.hidden = false;
         })
 
-        buttonEdit.addEventListener('click', (event) => {
+        imageButtonEdit.addEventListener('click', (event) => {
            event.preventDefault();
 
            imageInput.click();
         });
 
-        buttonRemove.addEventListener('click', (event) => {
+        imageButtonRemove.addEventListener('click', (event) => {
             event.preventDefault();
 
-            imageElement.src = buttonRemove.dataset.placeholder;
+            imageElement.src = imageButtonRemove.dataset.placeholder;
             imageInput.value = "";
 
-            buttonRemove.hidden = true;
+            imageButtonRemove.hidden = true;
         });
-    }
 
-    //Input media
-    for (let i = 1; i <= 3; i++) {
         const mediaInput = form.querySelector(`input[name="trick[media${i}]"]`);
         const mediaElement = form.querySelector(`.media.media${i} img`);
         const mediaPreviewEmbed = form.querySelector(`.media.media${i} .embed`);
-        const buttonEdit = form.querySelector(`.media.media${i} .edit`);
-        const buttonRemove = form.querySelector(`.media.media${i} .remove`);
+        const mediaButtonEdit = form.querySelector(`.media.media${i} .edit`);
+        const mediaButtonRemove = form.querySelector(`.media.media${i} .remove`);
 
         mediaInput.addEventListener('change', (event) => {
-            buttonRemove.hidden = false;
+            mediaButtonRemove.hidden = false;
         })
 
-        buttonEdit.addEventListener('click', (event) => {
+        mediaButtonEdit.addEventListener('click', (event) => {
             event.preventDefault();
 
             const modalElement = document.getElementById("addTrickMedia");
@@ -125,9 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 mediaInput.value = mediaEmbed.value;
 
                 if (mediaInput.value.length > 0) {
-                    buttonRemove.hidden = false;
-
-                    console.log(mediaPreviewEmbed);
+                    mediaButtonRemove.hidden = false;
 
                     mediaElement.hidden = true;
                     mediaPreviewEmbed.hidden = false;
@@ -152,13 +146,13 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.show();
         });
 
-        buttonRemove.addEventListener('click', (event) => {
+        mediaButtonRemove.addEventListener('click', (event) => {
             event.preventDefault();
 
             mediaInput.value = "";
             mediaElement.hidden = false;
 
-            buttonRemove.hidden = true;
+            mediaButtonRemove.hidden = true;
             mediaPreviewEmbed.hidden = true;
         });
     }

@@ -55,19 +55,19 @@ class TrickType extends AbstractType
                 ],
                 'required' => false
             ])
-            ->add('media1', FileType::class, [
+            ->add('media1', TextType::class, [
                 'attr' => [
                     'hidden' => ''
                 ],
                 'required' => false
             ])
-            ->add('media2', FileType::class, [
+            ->add('media2', TextType::class, [
                 'attr' => [
                     'hidden' => ''
                 ],
                 'required' => false
             ])
-            ->add('media3', FileType::class, [
+            ->add('media3', TextType::class, [
                 'attr' => [
                     'hidden' => ''
                 ],
