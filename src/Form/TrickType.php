@@ -11,9 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Mime\Part\File;
 
 class TrickType extends AbstractType
 {
@@ -79,21 +76,23 @@ class TrickType extends AbstractType
 
         $builder->add('firstImage', FileType::class, $firstImageOptions);
 
-        for($i = 1; $i <= 3; $i++) {
+        for($i = 1; $i <= Trick::LIMIT_IMAGES; $i++) {
             $cloneImageOptions = $imageOptions;
-            $cloneMediaOptions = $mediaOptions;
 
-            if ($trick) {
-                if ($i <= count($trick->getImages())) {
-                    $cloneImageOptions['attr']['data-edit'] = $this->uploadDir.$trick->getImages()[$i-1];
-                }
-
-                if ($i <= count($trick->getMedias())) {
-                    $cloneMediaOptions['attr']['data-edit'] = $trick->getMedias()[$i-1];
-                }
+            if ($trick && $i <= count($trick->getImages())) {
+                $cloneImageOptions['attr']['data-edit'] = $this->uploadDir.$trick->getImages()[$i-1];
             }
 
             $builder->add("image$i", FileType::class, $cloneImageOptions);
+        }
+
+        for($i = 1; $i <= Trick::LIMIT_MEDIAS; $i++) {
+            $cloneMediaOptions = $mediaOptions;
+
+            if ($trick && $i <= count($trick->getMedias())) {
+                $cloneMediaOptions['attr']['data-edit'] = $trick->getMedias()[$i-1];
+            }
+
             $builder->add("media$i", TextType::class, $cloneMediaOptions);
         }
 

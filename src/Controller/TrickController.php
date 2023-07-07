@@ -39,10 +39,8 @@ class TrickController extends AbstractController
     }
 
     #[Route('/tricks/edit/{id}', name: 'app_trick_edit')]
-    public function editTrick(Request $request, int $id): Response
+    public function editTrick(Request $request, ?Trick $trick): Response
     {
-        $trick = $this->entityManager->getRepository(Trick::class)->find($id);
-
         if (!$trick) {
             return $this->redirect('/');
         }
