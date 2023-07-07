@@ -1,5 +1,4 @@
 import {Modal} from "bootstrap";
-import button from "bootstrap/js/src/button";
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('form[name=trick]');
@@ -64,11 +63,23 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonRemoveFirstImage.hidden = true;
     });
 
+    //Load image if edit form
+    if (inputFirstImage.dataset.edit) {
+        elementFirstImage.src = inputFirstImage.dataset.edit;
+    }
+
     for (let i = 1; i <= 3; i++) {
         const imageInput = form.querySelector(`input[name="trick[image${i}]"]`);
         const imageElement = form.querySelector(`.media.image${i} img`);
         const imageButtonEdit = form.querySelector(`.media.image${i} .edit`);
         const imageButtonRemove = form.querySelector(`.media.image${i} .remove`);
+
+        //Load image if edit form
+        if (imageInput.dataset.edit) {
+            imageElement.src = imageInput.dataset.edit;
+
+            imageButtonRemove.hidden = false;
+        }
 
         imageInput.addEventListener('change', (event) => {
             const files = event.target.files;
@@ -102,6 +113,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const mediaPreviewEmbed = form.querySelector(`.media.media${i} .embed`);
         const mediaButtonEdit = form.querySelector(`.media.media${i} .edit`);
         const mediaButtonRemove = form.querySelector(`.media.media${i} .remove`);
+
+        //Load image if edit form
+        if (mediaInput.dataset.edit) {
+            mediaInput.value = mediaInput.dataset.edit;
+            mediaPreviewEmbed.innerHTML = mediaInput.value;
+
+            mediaElement.hidden = true;
+            mediaPreviewEmbed.hidden = false;
+
+            mediaButtonRemove.hidden = false;
+        }
 
         mediaInput.addEventListener('change', (event) => {
             mediaButtonRemove.hidden = false;

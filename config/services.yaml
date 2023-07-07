@@ -29,3 +29,7 @@ services:
         tags:
             - { name: doctrine.event_listener, event: prePersist}
             - { name: doctrine.event_listener, event: preUpdate}
+
+    App\Form\TrickType:
+        arguments:
+            $uploadDir: '%uploads_dir_name%'

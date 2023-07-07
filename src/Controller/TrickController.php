@@ -39,7 +39,7 @@ class TrickController extends AbstractController
     }
 
     #[Route('/tricks/edit/{id}', name: 'app_trick_edit')]
-    public function editTrick(int $id): Response
+    public function editTrick(Request $request, int $id): Response
     {
         $trick = $this->entityManager->getRepository(Trick::class)->find($id);
 
@@ -47,9 +47,80 @@ class TrickController extends AbstractController
             return $this->redirect('/');
         }
 
-        return $this->render('trick/index.html.twig', [
+        $formTrick = $this->createForm(TrickType::class, $trick);
+        $formTrickGroup = $this->createForm(TrickGroupType::class);
+
+        $formTrick->handleRequest($request);
+
+        if ($formTrick->isSubmitted() && $formTrick->isValid()) {
+            $trick->setTitle($formTrick->get('title')->getData());
+            $trick->setDescription($formTrick->get('description')->getData());
+
+            $trick->setTrickGroup($formTrick->get('trickGroup')->getData());
+
+            $uploadedFirstImage = $formTrick->get('firstImage')->getData();
+            if ($uploadedFirstImage) {
+                $newFilename = uniqid().'.'.$uploadedFirstImage->guessExtension();
+
+                try {
+                    $appPath = $this->getParameter('uploads_base_url');
+                    $uploadedFirstImage->move(
+                        $appPath,
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    //TODO : Changer
+                    echo $e->getMessage();
+                    die();
+                }
+
+                $trick->setFirstImage($newFilename);
+            }
+
+            $images = $trick->getImages();
+            for ($i = 1; $i <= 3; $i++) {
+                $uploadedFileImage = $formTrick->get('image'.$i)->getData();
+                if ($uploadedFileImage) {
+                    $newFilename = uniqid().'.'.$uploadedFileImage->guessExtension();
+
+                    try {
+                        $appPath = $this->getParameter('uploads_base_url');
+                        $uploadedFileImage->move(
+                            $appPath,
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        //TODO : Changer
+                        echo $e->getMessage();
+                        die();
+                    }
+
+                    $images[$i-1] = $newFilename;
+                }
+            }
+
+            $medias = $trick->getMedias();
+            for ($i = 1; $i <= 3; $i++) {
+                $mediaInput = $formTrick->get('media'.$i)->getData();
+                if ($mediaInput) {
+                    $medias[$i-1] = $mediaInput;
+                }
+            }
+
+            $trick->setImages($images);
+            $trick->setMedias($medias);
+
+            $this->entityManager->persist($trick);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('trick/new.html.twig', [
             'controller_name' => 'TrickController',
-            'trick' => $trick
+            'trick' => $trick,
+            'formTrick' => $formTrick,
+            'formTrickGroup' => $formTrickGroup
         ]);
     }
 
@@ -71,10 +142,6 @@ class TrickController extends AbstractController
     #[Route('/tricks/new', name: 'app_trick_new')]
     public function newTrick(Request $request): Response
     {
-        /*dump($request->request);
-        dump($request->query);
-        dump($request->files);
-        die();*/
         $trick = new Trick();
 
         $formTrick = $this->createForm(TrickType::class);
@@ -138,8 +205,6 @@ class TrickController extends AbstractController
 
             $trick->setImages($images);
             $trick->setMedias($medias);
-
-            //dump($trick);die();
 
             $this->entityManager->persist($trick);
             $this->entityManager->flush();

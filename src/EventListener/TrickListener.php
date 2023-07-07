@@ -18,7 +18,6 @@ class TrickListener
     }
 
     #[ORM\PrePersist]
-    #[ORM\PreUpdate]
     public function prePersist(LifecycleEventArgs $args): void
     {
         $trick = $args->getObject();
@@ -27,6 +26,12 @@ class TrickListener
             $slug = $this->slugger->slug($trick->getTitle())->lower();
             $trick->setSlug($this->makeSlugUnique($slug, $args));
         }
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate(LifecycleEventArgs $args): void
+    {
+        $this->prePersist($args);
     }
 
     private function makeSlugUnique($slug, LifecycleEventArgs $args)
