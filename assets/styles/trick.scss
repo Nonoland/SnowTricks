@@ -1,0 +1,18 @@
+.detail_trick {
+  .card {
+    .card-header {
+      padding: 0;
+
+      position: relative;
+
+      .trick_title {
+        position: absolute;
+
+        right: 50%;
+        bottom: 50%;
+
+        transform: translate(50%, 50%);
+      }
+    }
+  }
+}

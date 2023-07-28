@@ -24,12 +24,17 @@ class TrickController extends AbstractController
     }
 
     #[Route('/tricks/details/{slug}_{id}', name: 'app_trick_details')]
-    public function showTrick(string $slug, int $id): Response
+    public function showTrick(Request $request, ?Trick $trick): Response
     {
-        $trick = $this->entityManager->getRepository(Trick::class)->find($id);
-
         if (!$trick) {
             return $this->redirect('/');
+        }
+
+        if ($request->get('slug') != $trick->getSlug()) {
+            return $this->redirectToRoute(
+                'app_trick_details',
+                ['id' => $trick->getId(), 'slug' => $trick->getSlug()]
+            );
         }
 
         return $this->render('trick/index.html.twig', [

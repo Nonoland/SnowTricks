@@ -3,5 +3,18 @@
 {% block title %}SnowTrick | Trick{% endblock %}
 
 {% block body %}
-
+    <div class="container d-flex justify-content-center py-4 detail_trick">
+        <div class="card" style="width: 80%">
+            <div class="card-header">
+                <img class="card-img-top" src="https://placehold.co/1035x540?text=Image" alt="Placeholder">
+                <h1 class="trick_title">{{ trick.title }}</h1>
+            </div>
+            <div class="card-body">
+                <div class="medias">
+                    <div class="images"></div>
+                    <div class="embed"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
