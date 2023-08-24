@@ -9,11 +9,9 @@ use App\Form\TrickType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class TrickController extends AbstractController
 {
@@ -176,38 +174,32 @@ class TrickController extends AbstractController
                 $trick->setFirstImage($newFilename);
             }
 
-            $images = [];
-            for ($i = 1; $i <= 3; $i++) {
-                $uploadedFileImage = $formTrick->get('image'.$i)->getData();
-                if ($uploadedFileImage) {
-                    $newFilename = uniqid().'.'.$uploadedFileImage->guessExtension();
+            $images = json_decode($formTrick->get('images')->getData(), true);
+            $embeds = json_decode($formTrick->get('embeds')->getData(), true);
 
-                    try {
-                        $appPath = $this->getParameter('uploads_base_url');
-                        $uploadedFileImage->move(
-                            $appPath,
-                            $newFilename
-                        );
-                    } catch (FileException $e) {
-                        //TODO : Changer
-                        echo $e->getMessage();
-                        die();
-                    }
+            $trickImages = [];
+            foreach ($images as $image) {
+                $appPath = $this->getParameter('uploads_base_url');
+                $decodedContent = base64_decode($image);
 
-                    $images[] = $newFilename;
-                }
+                $imgData = getimagesize($image);
+                $mimeType = $imgData["mime"];
+                $extension = explode('/', $mimeType)[1];
+                $fileName = uniqid().".$extension";
+
+                $currentImage = fopen($image, 'r');
+                $newFile = fopen("$appPath/$fileName", 'w');
+
+                stream_copy_to_stream($currentImage, $newFile);
+
+                fclose($currentImage);
+                fclose($newFile);
+
+                $trickImages[] = $fileName;
             }
 
-            $medias = [];
-            for ($i = 1; $i <= 3; $i++) {
-                $mediaInput = $formTrick->get('media'.$i)->getData();
-                if ($mediaInput) {
-                    $medias[] = $mediaInput;
-                }
-            }
-
-            $trick->setImages($images);
-            $trick->setMedias($medias);
+            $trick->setImages($trickImages);
+            $trick->setMedias($embeds);
 
             $this->entityManager->persist($trick);
             $this->entityManager->flush();

@@ -3,16 +3,39 @@
 {% block title %}SnowTrick | Trick{% endblock %}
 
 {% block body %}
-    <div class="container d-flex justify-content-center py-4 detail_trick">
-        <div class="card" style="width: 80%">
+    <div class="container d-flex justify-content-center py-4 detail_trick new_trick">
+        <div class="card text-center" style="width: 80%">
             <div class="card-header">
-                <img class="card-img-top" src="https://placehold.co/1035x540?text=Image" alt="Placeholder">
+                <img class="card-img-top" src="/uploads/{{ trick.firstImage }}" alt="Placeholder">
                 <h1 class="trick_title">{{ trick.title }}</h1>
             </div>
             <div class="card-body">
-                <div class="medias">
-                    <div class="images"></div>
-                    <div class="embed"></div>
+                <div class="mb-3">
+                    <div class="row list_media">
+                        {% for image in trick.images %}
+                            <div class="col-md-2 media image">
+                                <img src="/uploads/{{ image }}" alt="">
+                            </div>
+                        {% endfor %}
+
+                        {% for embed in trick.medias %}
+                            <div class="col-md-2 media embed">
+                                {{ embed|raw }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <p class="card-text">
+                    {{ trick.description }}
+                </p>
+
+                <span class="badge bg-primary">Créé le 05/02/2023</span>
+                <span class="badge bg-primary">Modifié le 05/02/2023</span>
+                <span class="badge bg-info text-dark">Groupe</span>
+
+                <div class="comments my-3">
+
                 </div>
             </div>
         </div>

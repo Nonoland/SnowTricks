@@ -7,6 +7,7 @@ use App\Entity\TrickGroup;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -76,7 +77,17 @@ class TrickType extends AbstractType
 
         $builder->add('firstImage', FileType::class, $firstImageOptions);
 
-        for($i = 1; $i <= Trick::LIMIT_IMAGES; $i++) {
+        $builder->add("images", HiddenType::class, [
+            'required' => false,
+            'mapped' => false,
+            ]);
+
+        $builder->add("embeds", HiddenType::class, [
+            'required' => false,
+            'mapped' => false
+        ]);
+
+        /*for($i = 1; $i <= Trick::LIMIT_IMAGES; $i++) {
             $cloneImageOptions = $imageOptions;
 
             if ($trick && $i <= count($trick->getImages())) {
@@ -94,7 +105,7 @@ class TrickType extends AbstractType
             }
 
             $builder->add("media$i", TextType::class, $cloneMediaOptions);
-        }
+        }*/
 
         $builder
             ->add('save', SubmitType::class)

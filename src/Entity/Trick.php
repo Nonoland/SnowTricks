@@ -36,8 +36,8 @@ class Trick
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private array $medias = [];
 
-    const LIMIT_IMAGES = 3;
-    const LIMIT_MEDIAS = 3;
+    //const LIMIT_IMAGES = 3;
+    //const LIMIT_MEDIAS = 3;
 
     public function getId(): ?int
     {
