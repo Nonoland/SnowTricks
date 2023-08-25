@@ -1,5 +1,5 @@
 <div class="card">
-    <img src="{{ uploads_url }}/{{ trick.images[0] }}" alt="Snowboard" class="card-img-top">
+    <img src="{{ uploads_url }}/{{ trick.firstImage }}" alt="Snowboard" class="card-img-top">
     <div class="card-body">
         <h5 class="card-title"><a href="{{ path('app_trick_details', {slug: trick.slug, id: trick.id}) }}">{{ trick.title }}</a></h5>
         <a href="{{ path('app_trick_edit', {id: trick.id}) }}" class="btn btn-warning"><i class="bi bi-pencil"></i></a>

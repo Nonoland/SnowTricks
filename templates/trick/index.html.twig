@@ -13,14 +13,14 @@
                 <div class="mb-3">
                     <div class="row list_media">
                         {% for image in trick.images %}
-                            <div class="col-md-2 media image">
+                            <div class="col-md-2 media image" data-bs-toggle="modal" data-bs-target="#image{{ loop.index }}" role="button">
                                 <img src="/uploads/{{ image }}" alt="">
                             </div>
                         {% endfor %}
 
                         {% for embed in trick.medias %}
-                            <div class="col-md-2 media embed">
-                                {{ embed|raw }}
+                            <div class="col-md-2 media embed image" data-bs-toggle="modal" data-bs-target="#media{{ loop.index }}" role="button">
+                                <img src="{{ embed|getEmbedThumbnail }}" alt="">
                             </div>
                         {% endfor %}
                     </div>
@@ -30,14 +30,46 @@
                     {{ trick.description }}
                 </p>
 
-                <span class="badge bg-primary">Créé le 05/02/2023</span>
-                <span class="badge bg-primary">Modifié le 05/02/2023</span>
-                <span class="badge bg-info text-dark">Groupe</span>
+                <span class="badge bg-primary">Created on {{ trick.getDateAdd|date("d/m/Y") }}</span>
+                <span class="badge bg-primary">Modified on {{ trick.getDateUpdate|date("d/m/Y") }}</span>
+                <span class="badge bg-info text-dark">{{ trick.trickGroup.title }}</span>
 
-                <div class="comments my-3">
+                <section class="comments">
 
-                </div>
+                    {{ form(formComment) }}
+
+                    <div class="comments_list">
+                        {% for comment in trick.getComments() %}
+                            {% embed "embed/comment.html.twig" %}{% endembed %}
+                        {% endfor %}
+                    </div>
+
+                </section>
             </div>
         </div>
     </div>
+
+    {% for image in trick.images %}
+        <div class="modal fade" id="image{{ loop.index }}" tabindex="-1" aria-labelledby="image{{ loop.index }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img src="/uploads/{{ image }}" class="img-fluid" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% for embed in trick.medias %}
+        <div class="modal fade" id="media{{ loop.index }}" tabindex="-1" aria-labelledby="media{{ loop.index }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        {{ embed|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

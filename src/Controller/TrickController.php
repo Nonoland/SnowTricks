@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Trick;
 use App\Entity\TrickGroup;
+use App\Form\CommentType;
 use App\Form\TrickGroupType;
 use App\Form\TrickType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,9 +37,22 @@ class TrickController extends AbstractController
             );
         }
 
+        $formComment = $this->createForm(CommentType::class);
+        $formComment->handleRequest($request);
+
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
+            /** @var Comment $comment */
+            $comment = $formComment->getData();
+            $comment->setTrick($trick);
+
+            $this->entityManager->persist($comment);
+            $this->entityManager->flush();
+        }
+
         return $this->render('trick/index.html.twig', [
             'controller_name' => 'TrickController',
-            'trick' => $trick
+            'trick' => $trick,
+            'formComment' => $formComment
         ]);
     }
 

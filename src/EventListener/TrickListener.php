@@ -21,6 +21,12 @@ class TrickListener
     public function prePersist(LifecycleEventArgs $args): void
     {
         $trick = $args->getObject();
+        if (!$trick instanceof Trick) {
+            return;
+        }
+
+        $trick->setDateAdd(new \DateTime());
+        $trick->setDateUpdate(new \DateTime());
 
         if (empty($trick->getSlug())) {
             $slug = $this->slugger->slug($trick->getTitle())->lower();

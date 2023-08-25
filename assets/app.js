@@ -10,3 +10,4 @@ import './styles/app.scss';
 
 import './newTrick';
 import './newTrickGroup';
+import './trick';

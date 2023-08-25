@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TrickRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -35,6 +37,20 @@ class Trick
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private array $medias = [];
+
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
+    private Collection $comments;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date_add = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date_update = null;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
     //const LIMIT_IMAGES = 3;
     //const LIMIT_MEDIAS = 3;
@@ -124,6 +140,60 @@ class Trick
     public function setMedias(array $medias): self
     {
         $this->medias = $medias;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getTrick() === $this) {
+                $comment->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDateAdd(): ?\DateTimeInterface
+    {
+        return $this->date_add;
+    }
+
+    public function setDateAdd(\DateTimeInterface $date_add): static
+    {
+        $this->date_add = $date_add;
+
+        return $this;
+    }
+
+    public function getDateUpdate(): ?\DateTimeInterface
+    {
+        return $this->date_update;
+    }
+
+    public function setDateUpdate(\DateTimeInterface $date_update): static
+    {
+        $this->date_update = $date_update;
 
         return $this;
     }

@@ -14,5 +14,44 @@
         transform: translate(50%, 50%);
       }
     }
+
+    .card-body {
+      .list_media {
+        .image {
+          cursor: pointer;
+        }
+      }
+
+      .card-text {
+        width: 80%;
+        margin: 25px auto;
+      }
+
+      .comments {
+
+        form {
+          border-top: 1px solid #c5c5c5;
+          border-bottom: 1px solid #c5c5c5;
+
+          margin-top: 15px;
+          padding: 15px 0;
+        }
+
+        .comment {
+          justify-content: space-around;
+        }
+      }
+    }
+  }
+}
+
+.modal {
+  iframe {
+    width: 100%;
+  }
+}
+.modal {
+  iframe {
+    width: 100%;
   }
 }
