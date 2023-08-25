@@ -60,9 +60,11 @@
   iframe {
     width: 100%;
   }
-}
-.modal {
-  iframe {
-    width: 100%;
+
+  &.image_modal, &.embed_modal {
+    .modal-content {
+      background: transparent;
+      border-color: transparent;
+    }
   }
 }
