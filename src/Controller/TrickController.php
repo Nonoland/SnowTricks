@@ -10,6 +10,7 @@ use App\Form\TrickGroupType;
 use App\Form\TrickType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -106,9 +107,12 @@ class TrickController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    //TODO : Changer
-                    echo $e->getMessage();
-                    die();
+                    $cookieToast = self::createCookieToast("There was a problem downloading the main trick image");
+
+                    $response = $this->redirectToRoute('app_home');
+                    $response->headers->setCookie($cookieToast);
+
+                    return $response;
                 }
 
                 $trick->setFirstImage($newFilename);
@@ -143,7 +147,12 @@ class TrickController extends AbstractController
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_home');
+            $cookieToast = self::createCookieToast("The snowboard trick was updated");
+
+            $response = $this->redirectToRoute('app_home');
+            $response->headers->setCookie($cookieToast);
+
+            return $response;
         }
 
         return $this->render('trick/new.html.twig', [
@@ -196,9 +205,12 @@ class TrickController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    //TODO : Changer
-                    echo $e->getMessage();
-                    die();
+                    $cookieToast = self::createCookieToast("The snowboard trick was updated");
+
+                    $response = $this->redirectToRoute('app_home');
+                    $response->headers->setCookie($cookieToast);
+
+                    return $response;
                 }
 
                 $trick->setFirstImage($newFilename);
@@ -233,7 +245,12 @@ class TrickController extends AbstractController
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_home');
+            $cookieToast = self::createCookieToast("The snowboard trick was created");
+
+            $response = $this->redirectToRoute('app_home');
+            $response->headers->setCookie($cookieToast);
+
+            return $response;
         }
 
         return $this->render('trick/new.html.twig', [
@@ -288,5 +305,10 @@ class TrickController extends AbstractController
         }
 
         return $response;
+    }
+
+    public static function createCookieToast(string $text): Cookie
+    {
+        return Cookie::create("toast", $text, time() + 36000);
     }
 }

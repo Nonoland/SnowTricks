@@ -13,10 +13,20 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
+    <body id="{% block body_id %}page{% endblock %}">
     {% include "_partials/header.html.twig" %}
 
     {% block body %}{% endblock %}
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">SnowTrick</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
 
     {% include "_partials/footer.html.twig" %}
     </body>
