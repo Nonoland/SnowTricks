@@ -8,7 +8,7 @@
             <img class="first_image" src="https://placehold.co/1035x540?text=Image" alt="Placeholder">
             <div class="card-body">
                 {{ form_start(formTrick) }}
-                    <input type="hidden" name="type" value="add">
+                    <input type="hidden" name="type" value="{{ actionType }}">
                     {#<input type="hidden" name="images">
                     <input type="hidden" name="embeds">#}
                     {{ form_widget(formTrick.firstImage, {'attr': {'hidden' : ''}}) }}
@@ -27,7 +27,7 @@
 
                     <div class="mb-3">
                         <div class="row list_media">
-                            <div class="col-md-2 media add">
+                            <div class="col-md-2 media add my-2">
                                 <button id="addMedia">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -35,7 +35,7 @@
                                 </button>
                             </div>
 
-                            <div class="col-md-2 media image" hidden>
+                            <div class="col-md-2 media image my-2" hidden>
                                 <img src="https://placehold.co/600x400?text=Image"  alt="" />
                                 <div class="actions">
                                     <button class="edit">
@@ -51,7 +51,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-2 media embed" hidden>
+                            <div class="col-md-2 media embed my-2" hidden>
                                 <div class="embed" hidden></div>
                                 <div class="actions">
                                     <button class="edit">

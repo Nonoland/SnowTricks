@@ -1,5 +1,5 @@
 import {Modal} from "bootstrap";
-import {SnowAlert} from "./alert";
+import {SnowAlert} from "./../alert";
 
 document.addEventListener('DOMContentLoaded', () => {
     const modalElement = document.getElementById('addTrickGroup');

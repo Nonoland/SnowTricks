@@ -69,10 +69,31 @@ class TrickController extends AbstractController
         $formTrick->handleRequest($request);
 
         if ($formTrick->isSubmitted() && $formTrick->isValid()) {
+
+            /*dump($_GET);
+            dump($_POST);
+            dump($_FILES);*/
+
             $trick->setTitle($formTrick->get('title')->getData());
             $trick->setDescription($formTrick->get('description')->getData());
 
             $trick->setTrickGroup($formTrick->get('trickGroup')->getData());
+
+            //Remove images
+            $appPath = $this->getParameter('uploads_base_url');
+
+            $removeImages = explode(',', $formTrick->get('removeImages')->getData());
+            foreach ($removeImages as $image) {
+                if (!$image) {
+                    continue;
+                }
+                unlink($appPath.'/'.$image);
+            }
+            $trick->setImages(array_diff($trick->getImages(), $removeImages));
+
+            //Remove embeds
+            $removeEmbeds = explode(',', $formTrick->get('removeEmbeds')->getData());
+            $trick->setMedias(array_diff($trick->getMedias(), $removeEmbeds));
 
             $uploadedFirstImage = $formTrick->get('firstImage')->getData();
             if ($uploadedFirstImage) {
@@ -93,38 +114,31 @@ class TrickController extends AbstractController
                 $trick->setFirstImage($newFilename);
             }
 
-            $images = $trick->getImages();
-            for ($i = 1; $i <= 3; $i++) {
-                $uploadedFileImage = $formTrick->get('image'.$i)->getData();
-                if ($uploadedFileImage) {
-                    $newFilename = uniqid().'.'.$uploadedFileImage->guessExtension();
+            $images = json_decode($formTrick->get('images')->getData(), true) ?? [];
+            $embeds = json_decode($formTrick->get('embeds')->getData(), true) ?? [];
 
-                    try {
-                        $appPath = $this->getParameter('uploads_base_url');
-                        $uploadedFileImage->move(
-                            $appPath,
-                            $newFilename
-                        );
-                    } catch (FileException $e) {
-                        //TODO : Changer
-                        echo $e->getMessage();
-                        die();
-                    }
+            $trickImages = $trick->getImages();
+            foreach ($images as $image) {
+                $appPath = $this->getParameter('uploads_base_url');
 
-                    $images[$i-1] = $newFilename;
-                }
+                $imgData = getimagesize($image);
+                $mimeType = $imgData["mime"];
+                $extension = explode('/', $mimeType)[1];
+                $fileName = uniqid().".$extension";
+
+                $currentImage = fopen($image, 'r');
+                $newFile = fopen("$appPath/$fileName", 'w');
+
+                stream_copy_to_stream($currentImage, $newFile);
+
+                fclose($currentImage);
+                fclose($newFile);
+
+                $trickImages[] = $fileName;
             }
 
-            $medias = $trick->getMedias();
-            for ($i = 1; $i <= 3; $i++) {
-                $mediaInput = $formTrick->get('media'.$i)->getData();
-                if ($mediaInput) {
-                    $medias[$i-1] = $mediaInput;
-                }
-            }
-
-            $trick->setImages($images);
-            $trick->setMedias($medias);
+            $trick->setImages($trickImages);
+            $trick->setMedias($embeds);
 
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
@@ -136,7 +150,8 @@ class TrickController extends AbstractController
             'controller_name' => 'TrickController',
             'trick' => $trick,
             'formTrick' => $formTrick,
-            'formTrickGroup' => $formTrickGroup
+            'formTrickGroup' => $formTrickGroup,
+            'actionType' => 'edit'
         ]);
     }
 
@@ -195,7 +210,6 @@ class TrickController extends AbstractController
             $trickImages = [];
             foreach ($images as $image) {
                 $appPath = $this->getParameter('uploads_base_url');
-                $decodedContent = base64_decode($image);
 
                 $imgData = getimagesize($image);
                 $mimeType = $imgData["mime"];
@@ -225,7 +239,8 @@ class TrickController extends AbstractController
         return $this->render('trick/new.html.twig', [
             'controller_name' => 'TrickController',
             'formTrick' => $formTrick,
-            'formTrickGroup' => $formTrickGroup
+            'formTrickGroup' => $formTrickGroup,
+            'actionType' => 'add'
         ]);
     }
 

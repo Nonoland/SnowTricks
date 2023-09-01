@@ -8,6 +8,6 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 
-import './newTrick';
-import './newTrickGroup';
-import './trick';
+import './trickForm/newTrick';
+import './trickForm/newTrickGroup';
+import './trickForm/updateTrick';

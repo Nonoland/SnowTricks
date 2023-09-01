@@ -20,7 +20,7 @@
             <a href="{{ path('app_trick_new') }}" class="btn btn-success">Add new trick</a>
         </div>
 
-        <div class="row row-cols-5">
+        <div class="row">
             {% for trick in tricks %}
                 <div class="col mb-4">
                     {% embed "embed/card_trick.html.twig" %}{% endembed %}

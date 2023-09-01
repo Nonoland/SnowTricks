@@ -32,7 +32,7 @@ class Trick
     #[ORM\Column(length: 255)]
     private ?string $firstImage = null;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY)]
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     private array $images = [];
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]

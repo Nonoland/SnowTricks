@@ -13,13 +13,13 @@
                 <div class="mb-3">
                     <div class="row list_media">
                         {% for image in trick.images %}
-                            <div class="col-md-2 media image" data-bs-toggle="modal" data-bs-target="#image{{ loop.index }}" role="button">
+                            <div class="col-md-2 media image my-2" data-bs-toggle="modal" data-bs-target="#image{{ loop.index }}" role="button">
                                 <img src="/uploads/{{ image }}" alt="">
                             </div>
                         {% endfor %}
 
                         {% for embed in trick.medias %}
-                            <div class="col-md-2 media embed image" data-bs-toggle="modal" data-bs-target="#media{{ loop.index }}" role="button">
+                            <div class="col-md-2 media embed image my-2" data-bs-toggle="modal" data-bs-target="#media{{ loop.index }}" role="button">
                                 <img src="{{ embed|getEmbedThumbnail }}" alt="">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -54,7 +54,7 @@
     </div>
 
     {% for image in trick.images %}
-        <div class="modal fade" id="image{{ loop.index }}" tabindex="-1" aria-labelledby="image{{ loop.index }}" aria-hidden="true">
+        <div class="modal fade image_modal" id="image{{ loop.index }}" tabindex="-1" aria-labelledby="image{{ loop.index }}" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -66,7 +66,7 @@
     {% endfor %}
 
     {% for embed in trick.medias %}
-        <div class="modal fade" id="media{{ loop.index }}" tabindex="-1" aria-labelledby="media{{ loop.index }}" aria-hidden="true">
+        <div class="modal fade embed_modal" id="media{{ loop.index }}" tabindex="-1" aria-labelledby="media{{ loop.index }}" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">

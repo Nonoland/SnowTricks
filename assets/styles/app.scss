@@ -28,7 +28,12 @@ body {
 .tricks_list {
     margin: 50px auto;
 
+    .col {
+        max-width: 246px;
+    }
+
     .card {
+
         .card-img-top {
             object-fit: cover;
             aspect-ratio: 16/9;

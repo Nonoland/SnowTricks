@@ -39,20 +39,12 @@ class TrickType extends AbstractType
             'required' => false
         ];
 
-        $imageOptions = [
-            'attr' => [
-                'accept' => 'image/*',
-                'hidden' => ''
-            ],
+        $imagesOptions = [
             'required' => false,
             'mapped' => false,
-            'multiple' => false
         ];
 
-        $mediaOptions = [
-            'attr' => [
-                'hidden' => ''
-            ],
+        $mediasOptions = [
             'required' => false,
             'mapped' => false
         ];
@@ -73,39 +65,23 @@ class TrickType extends AbstractType
 
         if ($trick) {
             $firstImageOptions['attr']['data-edit'] = $this->uploadDir.$trick->getFirstImage();
+
+            $imagesOptions['attr']['data-images'] = json_encode($trick->getImages());
+            $mediasOptions['attr']['data-embeds'] = json_encode($trick->getMedias());
+
+            $builder->add('removeImages', HiddenType::class, [
+                'mapped' => false
+            ]);
+            $builder->add('removeEmbeds', HiddenType::class, [
+                'mapped' => false
+            ]);
         }
 
         $builder->add('firstImage', FileType::class, $firstImageOptions);
 
-        $builder->add("images", HiddenType::class, [
-            'required' => false,
-            'mapped' => false,
-            ]);
+        $builder->add("images", HiddenType::class, $imagesOptions);
 
-        $builder->add("embeds", HiddenType::class, [
-            'required' => false,
-            'mapped' => false
-        ]);
-
-        /*for($i = 1; $i <= Trick::LIMIT_IMAGES; $i++) {
-            $cloneImageOptions = $imageOptions;
-
-            if ($trick && $i <= count($trick->getImages())) {
-                $cloneImageOptions['attr']['data-edit'] = $this->uploadDir.$trick->getImages()[$i-1];
-            }
-
-            $builder->add("image$i", FileType::class, $cloneImageOptions);
-        }
-
-        for($i = 1; $i <= Trick::LIMIT_MEDIAS; $i++) {
-            $cloneMediaOptions = $mediaOptions;
-
-            if ($trick && $i <= count($trick->getMedias())) {
-                $cloneMediaOptions['attr']['data-edit'] = $trick->getMedias()[$i-1];
-            }
-
-            $builder->add("media$i", TextType::class, $cloneMediaOptions);
-        }*/
+        $builder->add("embeds", HiddenType::class, $mediasOptions);
 
         $builder
             ->add('save', SubmitType::class)
