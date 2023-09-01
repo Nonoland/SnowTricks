@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}SnowTrick | Home{% endblock %}
+
+{% block body_id %}home{% endblock %}
 
 {% block body %}
     <div style="" class="position-relative w-100 hero">
@@ -16,17 +18,17 @@
 
     <div class="container tricks_list">
 
-        <div class="row row-cols-5">
-            {% for i in 1..15 %}
+        <div class="text-center mb-4">
+            <a href="{{ path('app_trick_new') }}" class="btn btn-success">Add new trick</a>
+        </div>
+
+        <div class="row">
+            {% for trick in tricks %}
                 <div class="col mb-4">
-                    {% embed "embed/card_trick.html.twig" %}
-                        {% set trick_image = 'https://images.unsplash.com/photo-1478700485868-972b69dc3fc4?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&dl=mattias-olsson-nQz49efZEFs-unsplash.jpg&w=640' %}
-                        {% set trick_title = 'Snowboard trick' %}
-                    {% endembed %}
+                    {% embed "embed/card_trick.html.twig" %}{% endembed %}
                 </div>
             {% endfor %}
         </div>
 
     </div>
-
 {% endblock %}
