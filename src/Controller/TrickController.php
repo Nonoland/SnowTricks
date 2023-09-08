@@ -173,6 +173,12 @@ class TrickController extends AbstractController
             return $this->redirect('/');
         }
 
+        $comments = $trick->getComments();
+
+        foreach ($comments as $comment) {
+            $this->entityManager->remove($comment);
+        }
+
         $this->entityManager->remove($trick);
         $this->entityManager->flush();
 
