@@ -12,6 +12,11 @@
         bottom: 50%;
 
         transform: translate(50%, 50%);
+
+        background: #FFFFFF50;
+        padding: 10px;
+        backdrop-filter: blur(2px);
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
       }
     }
 
