@@ -9,8 +9,6 @@
             <div class="card-body">
                 {{ form_start(formTrick) }}
                     <input type="hidden" name="type" value="{{ actionType }}">
-                    {#<input type="hidden" name="images">
-                    <input type="hidden" name="embeds">#}
                     {{ form_widget(formTrick.firstImage, {'attr': {'hidden' : ''}}) }}
                     <div class="actions actions_first_image">
                         <button class="edit">
@@ -26,7 +24,14 @@
                     </div>
 
                     <div class="mb-3">
-                        <div class="row list_media">
+                        <div class="container">
+                            <div class="col text-center">
+                                <button class="btn btn-primary d-md-none" id="medias_handle">
+                                    See medias
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row list_media mobile-hide">
                             <div class="col-md-2 media add my-2">
                                 <button id="addMedia">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

@@ -91,10 +91,6 @@ class TrickController extends AbstractController
 
         if ($formTrick->isSubmitted() && $formTrick->isValid()) {
 
-            /*dump($_GET);
-            dump($_POST);
-            dump($_FILES);*/
-
             $trick->setTitle($formTrick->get('title')->getData());
             $trick->setDescription($formTrick->get('description')->getData());
 
