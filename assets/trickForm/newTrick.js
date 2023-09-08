@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             divEmbed.hidden = false;
             newEmbed.hidden = false;
 
-            let index = Object.keys(images).length;
+            let index = Object.keys(embeds).length;
             embeds[index] = inputEmbed.value;
 
             newEmbed.querySelector('button.remove').hidden = false;
@@ -146,10 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const formTrick = document.querySelector("form[name=trick]");
 
         const type = formTrick.querySelector("input[name=type]").value;
-
-        if (type === "add") {
-
-        }
 
         formTrick.querySelector('#trick_images').value = JSON.stringify(images);
         formTrick.querySelector('#trick_embeds').value = JSON.stringify(embeds);
