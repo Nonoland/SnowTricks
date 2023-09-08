@@ -142,7 +142,7 @@ class TrickController extends AbstractController
             }
 
             $trick->setImages($trickImages);
-            $trick->setMedias($embeds);
+            $trick->setMedias(array_merge($embeds, $trick->getMedias()));
 
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
@@ -309,6 +309,6 @@ class TrickController extends AbstractController
 
     public static function createCookieToast(string $text): Cookie
     {
-        return Cookie::create("toast", $text, time() + 36000);
+        return Cookie::create("toast", $text, time() + 36000, '/', null, true, false);
     }
 }
