@@ -17,6 +17,10 @@ class CommentListener
     {
         /** @var Comment $comment */
         $comment = $args->getObject();
+        if (!$comment instanceof Comment) {
+            return;
+        }
+
         $comment->setDateAdd(new \DateTime());
     }
 }
