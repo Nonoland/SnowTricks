@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function getCookie(name) {
     const cookies = document.cookie.split(';');
-    console.log(document.cookie);
     for(let i = 0; i < cookies.length; i++) {
         let cookieData = cookies[i].split('=');
         if (name === cookieData[0].trim()) {

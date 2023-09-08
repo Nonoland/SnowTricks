@@ -10,6 +10,8 @@ import './styles/app.scss';
 
 import './toast';
 
+import './home/home';
+
 import './trickForm/newTrick';
 import './trickForm/newTrickGroup';
 import './trickForm/updateTrick';
