@@ -13,14 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('load', () => {
-    checkIfLoadMoreIsVisible();
+    checkIfButtonIsVisible();
 });
 
 window.addEventListener('scroll', () => {
-    checkIfLoadMoreIsVisible()
+    checkIfButtonIsVisible()
 });
 
-function checkIfLoadMoreIsVisible() {
+function checkIfButtonIsVisible() {
     const button = document.getElementById('load_more');
 
     if (!button) {
@@ -39,47 +39,59 @@ function checkIfLoadMoreIsVisible() {
 function loadMoreHandle(event) {
     const button = event.currentTarget;
     button.disabled = true;
-
     const tricks = document.querySelectorAll('.card[data-type=trick]');
     const lastTrick = tricks[tricks.length - 1];
     const lastId = lastTrick.dataset.id;
     const count = 10;
 
-    fetch('/ajaxGetTricks?lastId=' + lastId + '&count=' + count, {
+    fetch(`/ajaxGetTricks?lastId=${lastId}&count=${count}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json'
         }
     })
         .then(response => response.json())
-        .then(data => {
-            if (!data.success) {
-                console.error('Error during data recovery.');
-                button.disabled = false;
-                return;
-            }
+        .then(handleFetchData(button))
+        .catch(handleFetchError);
+}
 
-            const tricksHtml = data.data;
-
-            if (tricksHtml.length !== count) {
-                document.getElementById('load_more').hidden = true;
-            }
-
-            const trickContainers = tricksHtml.map(trickHtml => {
-                const div = document.createElement('div');
-                div.className = 'col mb-4';
-                div.innerHTML = trickHtml;
-                return div;
-            });
-
-            const tricksList = document.getElementById('tricks_list');
-            trickContainers.forEach(trickContainer => {
-                tricksList.appendChild(trickContainer);
-            });
-
+function handleFetchData(button) {
+    return data => {
+        if (!data.success) {
+            console.error('Error during data recovery.');
             button.disabled = false;
-        })
-        .catch(error => {
-            console.error('AJAX request error :', error);
-        })
+            return;
+        }
+
+        const tricksHtml = data.data;
+        const loadMoreButton = document.getElementById('load_more');
+
+        if (tricksHtml.length !== data.targetCount) {
+            loadMoreButton.hidden = true;
+        }
+
+        const trickContainers = tricksHtml.map(createTrickContainer);
+
+        const tricksList = document.getElementById('tricks_list');
+        appendContainersToParent(trickContainers, tricksList);
+
+        button.disabled = false;
+    };
+}
+
+function createTrickContainer(trickHtml) {
+    const div = document.createElement('div');
+    div.className = 'col mb-4';
+    div.innerHTML = trickHtml;
+    return div;
+}
+
+function appendContainersToParent(containers, parent) {
+    containers.forEach(container => {
+        parent.appendChild(container);
+    });
+}
+
+function handleFetchError(error) {
+    console.error('AJAX request error :', error);
 }
