@@ -28,15 +28,15 @@ class TrickController extends AbstractController
     #[Route('/trick_add', name: 'app_trick_add')]
     public function addTrickData(): Response
     {
-        $trickGroup = $this->entityManager->getRepository(TrickGroup::class)->find(37);
-        for($i = 1; $i <= 50; $i++) {
-            $trick = new Trick();
-            $trick->setTitle("Trick $i");
-            $trick->setDescription("Trick $i description");
-            $trick->setTrickGroup($trickGroup);
-            $trick->setFirstImage("64e74172ce50a.jpeg");
+        $tricks = $this->entityManager->getRepository(Trick::class)->findAll();
 
-            $this->entityManager->persist($trick);
+        foreach ($tricks as $trick) {
+            for ($i = 1; $i <= 50; $i++) {
+                $comment = new Comment();
+                $comment->setTrick($trick);
+                $comment->setMessage("Commentaire $i");
+                $this->entityManager->persist($comment);
+            }
         }
 
         $this->entityManager->flush();
