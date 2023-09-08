@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" data-type="trick" data-id="{{ trick.id }}">
     <img src="{{ uploads_url }}/{{ trick.firstImage }}" alt="Snowboard" class="card-img-top">
     <div class="card-body">
         <h5 class="card-title"><a href="{{ path('app_trick_details', {slug: trick.slug, id: trick.id}) }}">{{ trick.title }}</a></h5>

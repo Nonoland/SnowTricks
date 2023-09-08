@@ -8,6 +8,7 @@ use App\Entity\TrickGroup;
 use App\Form\CommentType;
 use App\Form\TrickGroupType;
 use App\Form\TrickType;
+use App\Repository\TrickGroupRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -22,6 +23,25 @@ class TrickController extends AbstractController
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+    }
+
+    #[Route('/trick_add', name: 'app_trick_add')]
+    public function addTrickData(): Response
+    {
+        $trickGroup = $this->entityManager->getRepository(TrickGroup::class)->find(37);
+        for($i = 1; $i <= 50; $i++) {
+            $trick = new Trick();
+            $trick->setTitle("Trick $i");
+            $trick->setDescription("Trick $i description");
+            $trick->setTrickGroup($trickGroup);
+            $trick->setFirstImage("64e74172ce50a.jpeg");
+
+            $this->entityManager->persist($trick);
+        }
+
+        $this->entityManager->flush();
+
+        return new Response('add data');
     }
 
     #[Route('/tricks/details/{slug}_{id}', name: 'app_trick_details')]
