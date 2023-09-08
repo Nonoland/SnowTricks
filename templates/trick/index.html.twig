@@ -11,7 +11,14 @@
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <div class="row list_media">
+                    <div class="container">
+                        <div class="col text-center">
+                            <button class="btn btn-primary d-md-none" id="medias_handle">
+                                See medias
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row list_media mobile-hide">
                         {% for image in trick.images %}
                             <div class="col-md-2 media image my-2" data-bs-toggle="modal" data-bs-target="#image{{ loop.index }}" role="button">
                                 <img src="/uploads/{{ image }}" alt="">

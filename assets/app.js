@@ -12,6 +12,7 @@ import './toast';
 
 import './home/home';
 
+import './trickForm/trick';
 import './trickForm/newTrick';
 import './trickForm/newTrickGroup';
 import './trickForm/updateTrick';
