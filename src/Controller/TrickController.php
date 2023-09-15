@@ -121,12 +121,19 @@ class TrickController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    $cookieToast = self::createCookieToast("There was a problem downloading the main trick image");
+                    /*$cookieToast = self::createCookieToast("There was a problem downloading the main trick image");
 
                     $response = $this->redirectToRoute('app_home');
                     $response->headers->setCookie($cookieToast);
 
-                    return $response;
+                    return $response;*/
+
+                    $this->addFlash(
+                        'error',
+                        'There was a problem downloading the main trick image.'
+                    );
+
+                    return $this->redirectToRoute('app_home');
                 }
 
                 $trick->setFirstImage($newFilename);
@@ -161,12 +168,19 @@ class TrickController extends AbstractController
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
 
-            $cookieToast = self::createCookieToast("The snowboard trick was updated");
+            /*$cookieToast = self::createCookieToast("The snowboard trick was updated");
 
             $response = $this->redirectToRoute('app_home');
             $response->headers->setCookie($cookieToast);
 
-            return $response;
+            return $response;*/
+
+            $this->addFlash(
+                'success',
+                'The snowboard trick has been updated.'
+            );
+
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('trick/new.html.twig', [
@@ -196,7 +210,12 @@ class TrickController extends AbstractController
         $this->entityManager->remove($trick);
         $this->entityManager->flush();
 
-        return $this->redirect('/');
+        $this->addFlash(
+            'success',
+            'The snowboard trick has been removed.'
+        );
+
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/tricks/new', name: 'app_trick_new')]

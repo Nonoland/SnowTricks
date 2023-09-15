@@ -30,6 +30,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $registrationToken = null;
+
+    #[ORM\Column]
+    private ?bool $valid = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetPasswordToken = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,6 +117,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getRegistrationToken(): ?string
+    {
+        return $this->registrationToken;
+    }
+
+    public function setRegistrationToken(?string $registrationToken): static
+    {
+        $this->registrationToken = $registrationToken;
+
+        return $this;
+    }
+
+    public function isValid(): ?bool
+    {
+        return $this->valid;
+    }
+
+    public function setValid(bool $valid): static
+    {
+        $this->valid = $valid;
+
+        return $this;
+    }
+
+    public function getResetPasswordToken(): ?string
+    {
+        return $this->resetPasswordToken;
+    }
+
+    public function setResetPasswordToken(?string $resetPasswordToken): static
+    {
+        $this->resetPasswordToken = $resetPasswordToken;
 
         return $this;
     }
