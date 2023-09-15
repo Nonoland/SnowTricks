@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TrickController extends AbstractController
@@ -26,20 +28,16 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trick_add', name: 'app_trick_add')]
-    public function addTrickData(): Response
+    public function addTrickData(MailerInterface $mailer): Response
     {
-        $trickGroup = $this->entityManager->getRepository(TrickGroup::class)->find(37);
-        for($i = 1; $i <= 50; $i++) {
-            $trick = new Trick();
-            $trick->setTitle("Trick $i");
-            $trick->setDescription("Trick $i description");
-            $trick->setTrickGroup($trickGroup);
-            $trick->setFirstImage("64e74172ce50a.jpeg");
+        $mail = (new Email())
+            ->from('hello@snowtricks.com')
+            ->to('test@gmail.com')
+            ->subject('Mail test')
+            ->text('Mail test text')
+            ->html('<p>Mail test html</p>');
 
-            $this->entityManager->persist($trick);
-        }
-
-        $this->entityManager->flush();
+        $mailer->send($mail);
 
         return new Response('add data');
     }
@@ -123,12 +121,19 @@ class TrickController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    $cookieToast = self::createCookieToast("There was a problem downloading the main trick image");
+                    /*$cookieToast = self::createCookieToast("There was a problem downloading the main trick image");
 
                     $response = $this->redirectToRoute('app_home');
                     $response->headers->setCookie($cookieToast);
 
-                    return $response;
+                    return $response;*/
+
+                    $this->addFlash(
+                        'danger',
+                        'There was a problem downloading the main trick image.'
+                    );
+
+                    return $this->redirectToRoute('app_home');
                 }
 
                 $trick->setFirstImage($newFilename);
@@ -163,12 +168,19 @@ class TrickController extends AbstractController
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
 
-            $cookieToast = self::createCookieToast("The snowboard trick was updated");
+            /*$cookieToast = self::createCookieToast("The snowboard trick was updated");
 
             $response = $this->redirectToRoute('app_home');
             $response->headers->setCookie($cookieToast);
 
-            return $response;
+            return $response;*/
+
+            $this->addFlash(
+                'success',
+                'The snowboard trick has been updated.'
+            );
+
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('trick/new.html.twig', [
@@ -198,7 +210,12 @@ class TrickController extends AbstractController
         $this->entityManager->remove($trick);
         $this->entityManager->flush();
 
-        return $this->redirect('/');
+        $this->addFlash(
+            'success',
+            'The snowboard trick has been removed.'
+        );
+
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/tricks/new', name: 'app_trick_new')]

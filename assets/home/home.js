@@ -1,3 +1,13 @@
+let throttleTimer;
+const throttle = (callback, time) => {
+    if (throttleTimer) return;
+    throttleTimer = true;
+    setTimeout(() => {
+        callback();
+        throttleTimer = false;
+    }, time);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const home = document.getElementById('home');
     if (!home) {
@@ -10,20 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     loadMore.addEventListener('click', loadMoreHandle);
-});
 
-window.addEventListener('load', () => {
     checkIfButtonIsVisible();
 });
 
 window.addEventListener('scroll', () => {
-    checkIfButtonIsVisible()
+    throttle(checkIfButtonIsVisible, 500);
 });
 
 function checkIfButtonIsVisible() {
     const button = document.getElementById('load_more');
 
-    if (!button) {
+    if (!button || button.disabled) {
         return;
     }
 
@@ -38,11 +46,12 @@ function checkIfButtonIsVisible() {
 
 function loadMoreHandle(event) {
     const button = event.currentTarget;
-    button.disabled = true;
     const tricks = document.querySelectorAll('.card[data-type=trick]');
     const lastTrick = tricks[tricks.length - 1];
     const lastId = lastTrick.dataset.id;
     const count = 10;
+
+    button.disabled = true;
 
     fetch(`/ajaxGetTricks?lastId=${lastId}&count=${count}`, {
         method: 'GET',
@@ -64,18 +73,20 @@ function handleFetchData(button) {
         }
 
         const tricksHtml = data.data;
-        const loadMoreButton = document.getElementById('load_more');
-
-        if (tricksHtml.length !== data.targetCount) {
-            loadMoreButton.hidden = true;
-        }
-
         const trickContainers = tricksHtml.map(createTrickContainer);
-
         const tricksList = document.getElementById('tricks_list');
+
         appendContainersToParent(trickContainers, tricksList);
 
+        if (tricksHtml.length < data.targetCount) {
+            button.hidden = true;
+            button.disabled = true;
+            return;
+        }
+
+        button.hidden = false;
         button.disabled = false;
+
     };
 }
 

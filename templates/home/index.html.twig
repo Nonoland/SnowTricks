@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SnowTrick | Home{% endblock %}
+{% block title %}SnowTricks | Home{% endblock %}
 
 {% block body_id %}home{% endblock %}
 
@@ -14,6 +14,10 @@
                 <a href="#" id="outlined" class="btn px-5 py-3 text-white mt-3 mt-sm-0 mx-1" style="border-radius: 30px; border:1px solid #9B5DE5;">Sign in</a>
             </div>
         </div>
+    </div>
+
+    <div class="container mt-4">
+        {% embed "embed/alert.html.twig" %}{% endembed %}
     </div>
 
     <div class="container tricks_list">

@@ -3,3 +3,9 @@ recipe: symfony
 config:
   webroot: public
   php: '8.2'
+services:
+  mailhog:
+    type: mailhog
+    portforward: true
+    hogfrom:
+      - appserver
