@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TrickController extends AbstractController
@@ -26,20 +28,16 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trick_add', name: 'app_trick_add')]
-    public function addTrickData(): Response
+    public function addTrickData(MailerInterface $mailer): Response
     {
-        $tricks = $this->entityManager->getRepository(Trick::class)->findAll();
+        $mail = (new Email())
+            ->from('hello@snowtricks.com')
+            ->to('test@gmail.com')
+            ->subject('Mail test')
+            ->text('Mail test text')
+            ->html('<p>Mail test html</p>');
 
-        foreach ($tricks as $trick) {
-            for ($i = 1; $i <= 50; $i++) {
-                $comment = new Comment();
-                $comment->setTrick($trick);
-                $comment->setMessage("Commentaire $i");
-                $this->entityManager->persist($comment);
-            }
-        }
-
-        $this->entityManager->flush();
+        $mailer->send($mail);
 
         return new Response('add data');
     }
