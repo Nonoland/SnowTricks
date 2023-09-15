@@ -129,7 +129,7 @@ class TrickController extends AbstractController
                     return $response;*/
 
                     $this->addFlash(
-                        'error',
+                        'danger',
                         'There was a problem downloading the main trick image.'
                     );
 

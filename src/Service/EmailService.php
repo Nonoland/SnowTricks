@@ -63,7 +63,11 @@ class EmailService
             'mail/forgot_password.html.twig',
             [
                 'username' => $user->getUsername(),
-                'resetPasswordUrl' => ''
+                'resetPasswordUrl' => $this->urlGenerator->generate(
+                    'app_reinit_password',
+                    ['token' => $user->getResetPasswordToken()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                )
             ]
         );
     }
