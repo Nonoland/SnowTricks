@@ -39,6 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $resetPasswordToken = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $profilPicture = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -155,5 +158,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->resetPasswordToken = $resetPasswordToken;
 
         return $this;
+    }
+
+    public function getProfilPicture(): ?string
+    {
+        if (!$this->profilPicture) {
+            return "default.svg";
+        }
+
+        return $this->profilPicture;
+    }
+
+    public function setProfilPicture(?string $profilPicture): static
+    {
+        $this->profilPicture = $profilPicture;
+
+        return $this;
+    }
+
+    public function profilePictureIsDefault(): bool
+    {
+        if ($this->getProfilPicture() != "default.svg") {
+            return false;
+        }
+
+        return true;
     }
 }

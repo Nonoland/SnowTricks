@@ -8,7 +8,6 @@ use App\Entity\TrickGroup;
 use App\Form\CommentType;
 use App\Form\TrickGroupType;
 use App\Form\TrickType;
-use App\Repository\TrickGroupRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -244,12 +243,12 @@ class TrickController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    $cookieToast = self::createCookieToast("The snowboard trick was updated");
+                    $this->addFlash(
+                        'warning',
+                        'There was a problem updating the snowboard trick'
+                    );
 
-                    $response = $this->redirectToRoute('app_home');
-                    $response->headers->setCookie($cookieToast);
-
-                    return $response;
+                    return $this->redirectToRoute('app_home');
                 }
 
                 $trick->setFirstImage($newFilename);
@@ -284,12 +283,12 @@ class TrickController extends AbstractController
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
 
-            $cookieToast = self::createCookieToast("The snowboard trick was created");
+            $this->addFlash(
+                'success',
+                'The snowboard trick was created'
+            );
 
-            $response = $this->redirectToRoute('app_home');
-            $response->headers->setCookie($cookieToast);
-
-            return $response;
+            return $this->redirectToRoute('app_home');;
         }
 
         return $this->render('trick/new.html.twig', [
@@ -344,10 +343,5 @@ class TrickController extends AbstractController
         }
 
         return $response;
-    }
-
-    public static function createCookieToast(string $text): Cookie
-    {
-        return Cookie::create("toast", $text, time() + 36000, '/', null, true, false);
     }
 }

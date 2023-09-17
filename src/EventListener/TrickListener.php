@@ -3,7 +3,6 @@
 namespace App\EventListener;
 
 use App\Entity\Trick;
-use Doctrine\ORM\Event\PostPersistEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\String\Slugger\SluggerInterface;
