@@ -62,6 +62,7 @@ class TrickController extends AbstractController
             /** @var Comment $comment */
             $comment = $formComment->getData();
             $comment->setTrick($trick);
+            $comment->setUser($this->getUser());
 
             $this->entityManager->persist($comment);
             $this->entityManager->flush();
