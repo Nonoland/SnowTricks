@@ -162,6 +162,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getProfilPicture(): ?string
     {
+        if (!$this->profilPicture) {
+            return "default.svg";
+        }
+
         return $this->profilPicture;
     }
 
@@ -170,5 +174,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->profilPicture = $profilPicture;
 
         return $this;
+    }
+
+    public function profilePictureIsDefault(): bool
+    {
+        if ($this->getProfilPicture() != "default.svg") {
+            return false;
+        }
+
+        return true;
     }
 }

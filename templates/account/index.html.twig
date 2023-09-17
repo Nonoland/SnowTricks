@@ -20,15 +20,25 @@
                             <h2 class="mb-4">Account</h2>
                         </div>
                     </div>
+                    {{ form_start(form) }}
+
                     <div class="d-flex">
                         <div class="w-100">
                             <h4>Current profile picture</h4>
                             <img class="profile_picture" src="uploads/users/{{ user_profile_picture }}" alt="Profile picture">
                         </div>
                     </div>
-                    {{ form_start(form) }}
+
+                    {# <input type="hidden" name="delete_profile_picture"> #}
+
                     {{ form_row(form.profil_picture) }}
+
+{#<div class="mb-3">
+                        <button type="submit" id="account_delete_profile_picture" class="form-control btn-primary rounded px-3 btn">Delete profile picture</button>
+                    </div>#}
+
                     {{ form_row(form.submit) }}
+
                     {{ form_end(form) }}
                 </div>
             </div>

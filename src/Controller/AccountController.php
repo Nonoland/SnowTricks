@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\AccountType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,14 +27,32 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $picturesFolder = $this->getParameter('uploads_base_url') . "/users";
+
+            /** @var SubmitButton $removeProfilePicture */
+            if ($form->has('submit_remove_profile_picture')) {
+                $removeProfilePicture = $form->get('submit_remove_profile_picture');
+                if ($removeProfilePicture->isSubmitted() && $removeProfilePicture->isClicked() && !$user->profilePictureIsDefault()) {
+                    unlink($picturesFolder."/".$user->getProfilPicture());
+                    $user->setProfilPicture("");
+
+                    $entityManager->persist($user);
+                    $entityManager->flush();
+
+                    $this->addFlash(
+                        'success',
+                        'Your profile photo has been removed'
+                    );
+                }
+            }
+
             $uploadedProfilePicture = $form->get('profil_picture')->getData();
             if ($uploadedProfilePicture) {
                 $newFilename = $user->getUserIdentifier() . '.' . $uploadedProfilePicture->guessExtension();
 
                 try {
-                    $appPath = $this->getParameter('uploads_base_url') . "/users";
                     $uploadedProfilePicture->move(
-                        $appPath,
+                        $picturesFolder,
                         $newFilename
                     );
                 } catch (FileException $e) {
@@ -49,12 +68,12 @@ class AccountController extends AbstractController
 
                 $entityManager->persist($user);
                 $entityManager->flush();
-            }
 
-            $this->addFlash(
-                'success',
-                'Your profile photo has been updated'
-            );
+                $this->addFlash(
+                    'success',
+                    'Your profile photo has been updated'
+                );
+            }
 
             return $this->redirectToRoute('app_account');
         }
