@@ -55,6 +55,10 @@
 
         .comment {
           justify-content: space-around;
+
+          img {
+            object-fit: cover;
+          }
         }
       }
     }
