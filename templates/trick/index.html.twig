@@ -50,9 +50,18 @@
                     {{ form(formComment) }}
 
                     <div class="comments_list">
-                        {% for comment in trick.getComments() %}
+                        {% for comment in trick.getComments()|slice(0,5) %}
                             {% embed "embed/comment.html.twig" %}{% endembed %}
                         {% endfor %}
+                    </div>
+
+                    <div class="row justify-content-md-center mt-4">
+                        <div class="col-md-auto">
+                            <button class="btn btn-primary" id="load_more_comments">
+                                <span class="spinner-border spinner-border-sm spinner" aria-hidden="true" hidden></span>
+                                <span role="status">Load more</span>
+                            </button>
+                        </div>
                     </div>
 
                 </section>

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Trick;
 use App\Entity\TrickGroup;
+use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\TrickGroupType;
 use App\Form\TrickType;
@@ -29,14 +30,20 @@ class TrickController extends AbstractController
     #[Route('/trick_add', name: 'app_trick_add')]
     public function addTrickData(MailerInterface $mailer): Response
     {
-        $mail = (new Email())
-            ->from('hello@snowtricks.com')
-            ->to('test@gmail.com')
-            ->subject('Mail test')
-            ->text('Mail test text')
-            ->html('<p>Mail test html</p>');
+        $trick = $this->entityManager->getRepository(Trick::class)->find(12);
 
-        $mailer->send($mail);
+        $userIds = [7, 9];
+
+        for($i = 0; $i < 50; $i++) {
+            $comment = new Comment();
+            $comment->setUser($this->entityManager->getRepository(User::class)->find($userIds[array_rand($userIds)]));
+            $comment->setTrick($trick);
+            $comment->setDateAdd(new \DateTime());
+            $comment->setMessage("Message : $i");
+            $this->entityManager->persist($comment);
+        }
+
+        $this->entityManager->flush();
 
         return new Response('add data');
     }
