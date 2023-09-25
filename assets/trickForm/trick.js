@@ -64,6 +64,10 @@ function loadComments() {
 
                 buttonLoadMore.disabled = false;
                 buttonLoadMore.querySelector('.spinner').hidden = true;
+
+                if (!data.isMoreResults) {
+                    buttonLoadMore.hidden = true;
+                }
             });
     })
 }

@@ -73,7 +73,12 @@ class AjaxController extends AbstractController
             ]);
         }
 
-        $response->setContent(json_encode(['success' => true, 'data' => $commentsHtml, 'targetCount' => $count]));
+        $countQuery = clone $query;
+        $countQuery->select('COUNT(c.id)');
+        $total = $countQuery->getQuery()->getSingleScalarResult();
+        $isMoreResults = $total > 5;
+
+        $response->setContent(json_encode(['success' => true, 'data' => $commentsHtml, 'targetCount' => $count, 'isMoreResults' => $isMoreResults]));
 
         return $response;
     }
