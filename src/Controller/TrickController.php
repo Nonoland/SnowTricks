@@ -29,27 +29,6 @@ class TrickController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/trick_add', name: 'app_trick_add')]
-    public function addTrickData(MailerInterface $mailer): Response
-    {
-        $trick = $this->entityManager->getRepository(Trick::class)->find(12);
-
-        $userIds = [7, 9];
-
-        for($i = 0; $i < 50; $i++) {
-            $comment = new Comment();
-            $comment->setUser($this->entityManager->getRepository(User::class)->find($userIds[array_rand($userIds)]));
-            $comment->setTrick($trick);
-            $comment->setDateAdd(new \DateTime());
-            $comment->setMessage("Message : $i");
-            $this->entityManager->persist($comment);
-        }
-
-        $this->entityManager->flush();
-
-        return new Response('add data');
-    }
-
     #[Route('/tricks/details/{slug}_{id}', name: 'app_trick_details')]
     public function showTrick(Request $request, ?Trick $trick): Response
     {
