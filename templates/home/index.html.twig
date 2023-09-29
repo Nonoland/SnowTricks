@@ -10,28 +10,33 @@
             <span>SnowTricks</span>
             <h1 class="mb-4 mt-2 font-weight-bold text-center">Encyclopaedia of snowboard tricks</h1>
             <div class="text-center">
-                <a href="#" id="filled" class="btn px-5 py-3 text-white mt-3 mt-sm-0 mx-1" style="border-radius: 30px; background-color: #9B5DE5;">See tricks</a>
+                <a href="#tricks-list" id="filled" class="btn px-5 py-3 text-white mt-3 mt-sm-0 mx-1" style="border-radius: 30px; background-color: #9B5DE5;">See tricks</a>
                 <a href="#" id="outlined" class="btn px-5 py-3 text-white mt-3 mt-sm-0 mx-1" style="border-radius: 30px; border:1px solid #9B5DE5;">Sign in</a>
             </div>
         </div>
+        <a href="#tricks-list" class="to-trick-list-up">
+            <i class="bi bi-arrow-down"></i>
+        </a>
     </div>
 
     <div class="container mt-4">
         {% embed "embed/alert.html.twig" %}{% endembed %}
     </div>
 
-    <div class="container tricks_list">
+    <div class="tricks_list" id="tricks-list">
 
         <div class="text-center mb-4">
             <a href="{{ path('app_trick_new') }}" class="btn btn-success">Add new trick</a>
         </div>
 
-        <div id="tricks_list" class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1">
-            {% for trick in tricks %}
-                <div class="col mb-4">
-                    {% embed "embed/card_trick.html.twig" %}{% endembed %}
-                </div>
-            {% endfor %}
+        <div class="container">
+            <div id="tricks_list" class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1">
+                {% for trick in tricks %}
+                    <div class="col mb-4">
+                        {% embed "embed/card_trick.html.twig" %}{% endembed %}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
 
         <div class="row justify-content-md-center">
@@ -42,6 +47,10 @@
                 </button>
             </div>
         </div>
+
+        <a href="#tricks-list" class="to-trick-list-down">
+            <i class="bi bi-arrow-up"></i>
+        </a>
 
     </div>
 {% endblock %}

@@ -61,6 +61,23 @@ body {
     object-fit: contain;
 }
 
+.tricks_list {
+    position: relative;
+}
+
+.to-trick-list-up, .to-trick-list-down {
+    position: absolute;
+    border-radius: 50%;
+    border: none;
+    font-size: 40px;
+    padding: 0 10px;
+    right: 5px;
+    bottom: 5px;
+    background: lightgray;
+    color: black;
+    box-shadow: 2px 2px 10px 0 #000000;
+}
+
 footer {
     background-color: white;
 }
