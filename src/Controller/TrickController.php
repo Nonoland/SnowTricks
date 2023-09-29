@@ -111,13 +111,6 @@ class TrickController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    /*$cookieToast = self::createCookieToast("There was a problem downloading the main trick image");
-
-                    $response = $this->redirectToRoute('app_home');
-                    $response->headers->setCookie($cookieToast);
-
-                    return $response;*/
-
                     $this->addFlash(
                         'danger',
                         'There was a problem downloading the main trick image.'
