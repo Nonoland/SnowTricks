@@ -177,13 +177,6 @@ class TrickController extends AbstractController
             $this->entityManager->persist($trick);
             $this->entityManager->flush();
 
-            /*$cookieToast = self::createCookieToast("The snowboard trick was updated");
-
-            $response = $this->redirectToRoute('app_home');
-            $response->headers->setCookie($cookieToast);
-
-            return $response;*/
-
             $this->addFlash(
                 'success',
                 'The snowboard trick has been updated.'
