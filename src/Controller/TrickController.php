@@ -11,6 +11,8 @@ use App\Form\TrickGroupType;
 use App\Form\TrickType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -89,6 +91,8 @@ class TrickController extends AbstractController
             return $this->redirect('/');
         }
 
+        $filesystem = new Filesystem();
+
         $formTrick = $this->createForm(TrickType::class, $trick);
         $formTrickGroup = $this->createForm(TrickGroupType::class);
 
@@ -109,7 +113,7 @@ class TrickController extends AbstractController
                 if (!$image) {
                     continue;
                 }
-                unlink($appPath.'/'.$image);
+                $filesystem->remove($appPath.'/'.$image);
             }
             $trick->setImages(array_diff($trick->getImages(), $removeImages));
 
@@ -158,13 +162,11 @@ class TrickController extends AbstractController
                 $extension = explode('/', $mimeType)[1];
                 $fileName = uniqid().".$extension";
 
-                $currentImage = fopen($image, 'r');
-                $newFile = fopen("$appPath/$fileName", 'w');
-
-                stream_copy_to_stream($currentImage, $newFile);
-
-                fclose($currentImage);
-                fclose($newFile);
+                try {
+                    $filesystem->copy($image, "$appPath/$fileName");
+                } catch(IOExceptionInterface $exception) {
+                    $this->addFlash('error', 'An error occurred while copying the image');
+                }
 
                 $trickImages[] = $fileName;
             }
