@@ -10,12 +10,13 @@ use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AccountController extends AbstractController
 {
     #[Route('/account', name: 'app_account')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -75,12 +76,47 @@ class AccountController extends AbstractController
                 );
             }
 
+            $currentPassword = $form->get('current_password')->getData();
+            $newPassword = $form->get('new_password')->getData();
+            $repeatNewPassword = $form->get('repeat_new_password')->getData();
+
+            if ($currentPassword && $newPassword && $repeatNewPassword) {
+                if (!$passwordHasher->isPasswordValid($user, $currentPassword)) {
+                    $this->addFlash('error', 'Current password is not correct');
+                    return $this->redirectToRoute('app_account');
+                }
+
+                if ($newPassword != $repeatNewPassword) {
+                    $this->addFlash('error', 'New passwords are not identical');
+                    return $this->redirectToRoute('app_account');
+                }
+
+                $user->setPassword($newPassword);
+                $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+                $user->setPassword($hashedPassword);
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Password has been changed');
+            }
+
+            $email = $form->get('email')->getData();
+            if ($email && $user->getEmail() != $email) {
+                $user->setEmail($email);
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Email has been changed');
+            }
+
             return $this->redirectToRoute('app_account');
         }
 
         return $this->render('account/index.html.twig', [
             'form' => $form,
-            'user_profile_picture' => $user->getProfilPicture()
+            'user_profile_picture' => $user->getProfilPicture(),
         ]);
     }
 }
