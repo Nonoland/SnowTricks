@@ -55,6 +55,12 @@
 
         .comment {
           justify-content: space-around;
+          max-width: 550px;
+          border-bottom: 1px solid #e1e1e1;
+
+          margin-right: auto;
+          margin-left: auto;
+          margin-bottom: 20px;
 
           img {
             object-fit: cover;

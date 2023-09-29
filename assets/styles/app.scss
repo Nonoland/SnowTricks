@@ -28,10 +28,7 @@ body {
 
 .tricks_list {
     margin: 50px auto;
-
-    .col {
-        max-width: 246px;
-    }
+    position: relative;
 
     @media screen and (max-width: 491px) {
         .row {
@@ -59,10 +56,6 @@ body {
     width: 150px;
     height: 150px;
     object-fit: contain;
-}
-
-.tricks_list {
-    position: relative;
 }
 
 .to-trick-list-up, .to-trick-list-down {
