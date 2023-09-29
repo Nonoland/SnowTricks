@@ -12,5 +12,5 @@ import './home/home.js';
 
 import './trickForm/trick.js';
 import './trickForm/newTrick.js';
-import './trickForm/newTrickGrou.js';
+import './trickForm/newTrickGroup.js';
 import './trickForm/updateTrick.js';

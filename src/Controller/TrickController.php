@@ -197,6 +197,8 @@ class TrickController extends AbstractController
     {
         $trick = new Trick();
 
+        $filesystem = new Filesystem();
+
         $formTrick = $this->createForm(TrickType::class);
         $formTrickGroup = $this->createForm(TrickGroupType::class);
 
@@ -241,13 +243,11 @@ class TrickController extends AbstractController
                 $extension = explode('/', $mimeType)[1];
                 $fileName = uniqid().".$extension";
 
-                $currentImage = fopen($image, 'r');
-                $newFile = fopen("$appPath/$fileName", 'w');
-
-                stream_copy_to_stream($currentImage, $newFile);
-
-                fclose($currentImage);
-                fclose($newFile);
+                try {
+                    $filesystem->copy($image, "$appPath/$fileName");
+                } catch(IOExceptionInterface $exception) {
+                    $this->addFlash('error', 'An error occurred while copying the image');
+                }
 
                 $trickImages[] = $fileName;
             }
