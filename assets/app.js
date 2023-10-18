@@ -8,9 +8,9 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 
-import './home/home';
+import './home/home.js';
 
-import './trickForm/trick';
-import './trickForm/newTrick';
-import './trickForm/newTrickGroup';
-import './trickForm/updateTrick';
+import './trickForm/trick.js';
+import './trickForm/newTrick.js';
+import './trickForm/newTrickGroup.js';
+import './trickForm/updateTrick.js';

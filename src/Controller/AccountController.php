@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\AccountType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +25,8 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $filesystem = new Filesystem();
+
         $form = $this->createForm(AccountType::class);
         $form->handleRequest($request);
 
@@ -34,7 +37,7 @@ class AccountController extends AbstractController
             if ($form->has('submit_remove_profile_picture')) {
                 $removeProfilePicture = $form->get('submit_remove_profile_picture');
                 if ($removeProfilePicture->isSubmitted() && $removeProfilePicture->isClicked() && !$user->profilePictureIsDefault()) {
-                    unlink($picturesFolder."/".$user->getProfilPicture());
+                    $filesystem->remove($picturesFolder."/".$user->getProfilPicture());
                     $user->setProfilPicture("");
 
                     $entityManager->persist($user);
